@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EventEmitter2 } from 'eventemitter2';
 import { Repository } from 'typeorm';
 import { Contact } from './contact.entity';
 import { CreateContactDo } from './dto/create-contact.dto';
@@ -9,6 +10,7 @@ import { UpdateContactDo } from './dto/update-contact.dto';
 export class ContactsService {
   constructor(
     @InjectRepository(Contact) private contactsRepository: Repository<Contact>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   findAll(): Promise<Contact[]> {
@@ -23,9 +25,18 @@ export class ContactsService {
     });
   }
 
-  create(creatContactDto: CreateContactDo): Promise<Contact> {
-    const contact = this.contactsRepository.create(creatContactDto);
-    return this.contactsRepository.save(contact);
+  async create(creatContactDto: CreateContactDo): Promise<Contact> {
+    let contact = this.contactsRepository.create(creatContactDto);
+    contact = await this.contactsRepository.save(contact);
+
+    this.eventEmitter.emit('contact.created', {
+      title: 'contact',
+      contact_id: contact.id,
+      timestamp: contact.created_at,
+      description: `contact created`,
+    });
+
+    return contact;
   }
 
   async update(
