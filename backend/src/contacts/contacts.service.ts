@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EventEmitter2 } from 'eventemitter2';
 import { Repository } from 'typeorm';
-import { Contact } from './contact.entity';
+import { Contact } from './entities/contact.entity';
 import { CreateContactDo } from './dto/create-contact.dto';
 import { UpdateContactDo } from './dto/update-contact.dto';
+import { ContactLog } from './entities/contact-log.entity';
 
 @Injectable()
 export class ContactsService {
   constructor(
     @InjectRepository(Contact) private contactsRepository: Repository<Contact>,
+    @InjectRepository(ContactLog)
+    private contactLogRepository: Repository<ContactLog>,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -25,16 +28,24 @@ export class ContactsService {
     });
   }
 
+  async findLogs(id: number): Promise<ContactLog[]> {
+    return this.contactLogRepository.find({
+      where: {
+        contact: {
+          id,
+        },
+      },
+      order: {
+        generated_at: 'DESC',
+      },
+    });
+  }
+
   async create(creatContactDto: CreateContactDo): Promise<Contact> {
     let contact = this.contactsRepository.create(creatContactDto);
-    contact = await this.contactsRepository.save(contact);
 
-    this.eventEmitter.emit('contact.created', {
-      title: 'contact',
-      contact_id: contact.id,
-      timestamp: contact.created_at,
-      description: `contact created`,
-    });
+    contact = await this.contactsRepository.save(contact);
+    this.eventEmitter.emit('contact.created', contact);
 
     return contact;
   }
@@ -43,7 +54,7 @@ export class ContactsService {
     id: number,
     updateContactDto: UpdateContactDo,
   ): Promise<Contact> {
-    const contact = await this.findById(id);
+    let contact = await this.findById(id);
 
     if (updateContactDto.firstName) {
       contact.firstName = updateContactDto.firstName;
@@ -62,14 +73,20 @@ export class ContactsService {
     }
 
     if (contact) {
-      return this.contactsRepository.save(contact);
+      contact = await this.contactsRepository.save(contact);
+      this.eventEmitter.emit('contact.updated', contact);
     }
+
+    return contact;
   }
 
   async delete(id: number): Promise<Contact> {
-    const contact = await this.findById(id);
+    let contact = await this.findById(id);
     contact.deleted = true;
 
-    return this.contactsRepository.save(contact);
+    contact = await this.contactsRepository.save(contact);
+    this.eventEmitter.emit('contact.deleted', contact);
+
+    return contact;
   }
 }
