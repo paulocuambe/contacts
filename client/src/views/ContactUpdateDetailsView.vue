@@ -26,7 +26,6 @@ const updateErrors = reactive({
   phoneNumber: [],
 });
 
-
 onBeforeMount(async () => {
   const fetchContact = await fetch(`/api/contacts/${id.value}`);
 

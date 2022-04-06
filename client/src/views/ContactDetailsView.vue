@@ -23,7 +23,6 @@ onBeforeMount(async () => {
 
   if (loadingContactState.value === "success") {
     const logRequest = await fetch(`/api/contacts/${id.value}/logs`);
-    console.log("aqui");
 
     if (logRequest.status != 200) {
       logError.value = await logRequest.json();
