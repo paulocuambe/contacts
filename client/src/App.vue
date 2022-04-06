@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from "vue-router";
   <header>
     <nav>
       <RouterLink to="/">Contacts</RouterLink>
-      <RouterLink :to="{ name: 'contacts.new' }">Contacts</RouterLink>
+      <RouterLink :to="{ name: 'contacts.new' }">Add a new contact</RouterLink>
     </nav>
   </header>
 
