@@ -10,6 +10,11 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/contacts/new",
+      name: "contacts.new",
+      component: () => import("../views/CreateContact.vue"),
+    },
+    {
       path: "/contacts/:id",
       name: "contact.details",
       component: () => import("../views/ContactDetailsView.vue"),
