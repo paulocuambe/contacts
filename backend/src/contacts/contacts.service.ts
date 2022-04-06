@@ -17,7 +17,14 @@ export class ContactsService {
   ) {}
 
   findAll(): Promise<Contact[]> {
-    return this.contactsRepository.find({ deleted: false });
+    return this.contactsRepository.find({
+      where: {
+        deleted: false,
+      },
+      order: {
+        created_at: 'DESC',
+      },
+    });
   }
 
   async findById(id: number): Promise<Contact> {
