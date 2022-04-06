@@ -19,6 +19,11 @@ const router = createRouter({
       name: "contact.details",
       component: () => import("../views/ContactDetailsView.vue"),
     },
+    {
+      path: "/contact/:id/edit",
+      name: "contact.update",
+      component: () => import("../views/ContactUpdateDetailsView.vue"),
+    },
   ],
 });
 

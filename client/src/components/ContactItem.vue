@@ -16,7 +16,11 @@ const fullName = computed(
 
 <template>
   <div>
-    {{ fullName }} -
+    <span>{{ fullName }}</span> -
+    <RouterLink :to="{ name: 'contact.update', params: { id: contact.id } }">
+      Update
+    </RouterLink>
+    -
     <RouterLink :to="{ name: 'contact.details', params: { id: contact.id } }">
       Details
     </RouterLink>
