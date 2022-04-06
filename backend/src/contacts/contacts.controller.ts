@@ -17,7 +17,7 @@ import { UpdateContactDo } from './dto/update-contact.dto';
 import { ContactLog } from './entities/contact-log.entity';
 
 @UseFilters(EntityNotFoundFilter, DuplicateEntriesFilter)
-@Controller('contacts')
+@Controller('api/contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
