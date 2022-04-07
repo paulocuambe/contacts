@@ -127,7 +127,7 @@ onBeforeRouteLeave(() => {
           </p>
         </div>
       </div>
-      <button type="submit" :disabled="isLoading">Add new contact</button>
+      <button type="submit" class="btn-primary" :disabled="isLoading">Add new contact</button>
     </form>
     <div v-if="isLoading">Saving...</div>
   </div>

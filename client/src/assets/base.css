@@ -14,7 +14,7 @@ a.router-link-exact-active {
     @apply underline;
 }
 button {
-    @apply py-[.125rem] px-2 border rounded border-black bg-gray-100 text-black;
+    @apply py-[.125rem] px-2 rounded font-semibold border-black bg-gray-100 text-black;
 }
 
 button:hover {
@@ -27,12 +27,28 @@ input {
 label {
     @apply font-bold;
 }
-.btn-dangerous {
-    @apply bg-red-100 border-0;
+.btn-primary {
+    @apply bg-blue-400 border-0;
 }
 
+.btn-primary:hover {
+    @apply bg-blue-300;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 border-0;
+}
+
+.btn-secondary:hover {
+    @apply bg-gray-100;
+}
+.btn-dangerous {
+    @apply bg-red-200 border-0;
+}
+
+
 .btn-dangerous:hover {
-    @apply bg-red-200;
+    @apply bg-red-300;
 }
 
 
@@ -45,11 +61,11 @@ label {
 }
 
 .secondary-link.router-link-exact-active {
-    @apply bg-gray-400;
+    @apply bg-gray-300;
 }
 
 .secondary-link.router-link-exact-active:hover {
-    @apply bg-gray-300;
+    @apply bg-gray-200;
 }
 .badge,
 .badge-primary,

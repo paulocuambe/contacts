@@ -160,8 +160,8 @@ onBeforeRouteLeave(() => {
       </div>
 
       <div class="flex gap-4">
-        <button type="submit" :disabled="isUpdating">Update</button>
-        <button type="button" @click="resetForm">Discard changes</button>
+        <button type="submit" class="btn-primary" :disabled="isUpdating">Update</button>
+        <button type="button" class="btn-secondary" @click="resetForm">Discard changes</button>
       </div>
     </form>
     <div v-if="isUpdating">Updating...</div>
