@@ -16,7 +16,7 @@ const deleteItem = async (id) => {
 </script>
 
 <template>
-  <main>
+  <main class="container mx-auto">
     <div v-if="loadingState === 'loading'">Loading contacts...</div>
     <div v-else-if="loadingState === 'error'">Error: {{ error.message }}</div>
     <div v-else-if="contacts.length === 0">

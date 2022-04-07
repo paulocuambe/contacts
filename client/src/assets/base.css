@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+a {
+    @apply text-blue-800;
+}
+
+a:hover {
+    @apply text-blue-900 underline;
+}
+
+button {
+    @apply py-[.125rem] px-2 border rounded border-black bg-gray-100 text-black;
+}
+
+button:hover {
+    @apply bg-gray-200;
+}

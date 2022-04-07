@@ -3,9 +3,9 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Contacts</RouterLink>
+  <header class="container mx-auto">
+    <nav class="flex justify-between">
+      <RouterLink to="/">Home</RouterLink>
       <RouterLink :to="{ name: 'contacts.new' }">Add a new contact</RouterLink>
     </nav>
   </header>
