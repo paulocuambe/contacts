@@ -128,13 +128,3 @@ onBeforeRouteLeave(() => {
     <div v-if="isLoading">Saving...</div>
   </div>
 </template>
-
-<style scoped>
-input {
-  @apply w-full border border-gray-600 rounded px-2 py-1;
-}
-
-label {
-  @apply font-bold;
-}
-</style>

@@ -17,6 +17,13 @@ button {
 button:hover {
     @apply bg-gray-200;
 }
+input {
+    @apply w-full border border-gray-600 rounded px-2 py-1;
+}
+
+label {
+    @apply font-bold;
+}
 .btn-dangerous {
     @apply bg-red-100 border-0;
 }
