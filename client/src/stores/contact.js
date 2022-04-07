@@ -88,6 +88,44 @@ export const useContactStore = defineStore({
       }
     },
 
+    async updateContact(id, contact) {
+      this.saveContactErrors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phoneNumber: [],
+      };
+
+      this.savingContactState = "loading";
+      const saveRequest = await fetch(`/api/contacts/${id}`, {
+        body: JSON.stringify(contact),
+        headers: {
+          "Content-type": "application/json",
+        },
+        method: "PATCH",
+      });
+
+      let errorResponse = {};
+      if (saveRequest.status !== 200) {
+        errorResponse = await saveRequest.json();
+
+        if (saveRequest.status === 400) {
+          this.saveContactErrors = mappedValidationErrors(
+            errorResponse.message
+          );
+        }
+
+        this.savingContactState = "error";
+      } else {
+        const updatedContact = await saveRequest.json();
+        this.contacts = this.contacts.map((contact) =>
+          contact.id !== id ? contact : updatedContact
+        );
+
+        this.savingContactState = "success";
+      }
+    },
+
     async deleteContact(id) {
       this.deleteContactId = id;
       this.deletingContactsState = "loading";

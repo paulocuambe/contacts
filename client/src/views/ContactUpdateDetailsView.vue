@@ -2,15 +2,10 @@
 import { reactive, ref } from "@vue/reactivity";
 import { computed, onBeforeMount } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
+import { useContactStore } from "../stores/contact";
 
 const id = ref(useRoute().params.id);
-const contacts = ref({});
-const errorResponse = ref({});
-const loadingUpdateState = ref("idle");
-const loadingContactState = ref("loading");
-const isUpdating = computed(() => loadingUpdateState.value === "loading");
-const updatedContact = ref({});
-const loadContactError = ref({});
+const store = useContactStore();
 
 const form = reactive({
   firstName: null,
@@ -20,12 +15,19 @@ const form = reactive({
 });
 
 const updateErrors = reactive({
-  firstName: [],
-  lastName: [],
-  email: [],
-  phoneNumber: [],
+  firstName: computed(() => store.saveContactErrors.firstName),
+  lastName: computed(() => store.saveContactErrors.lastName),
+  email: computed(() => store.saveContactErrors.email),
+  phoneNumber: computed(() => store.saveContactErrors.phoneNumber),
 });
 
+const loadingUpdateState = computed(() => store.savingContactState);
+const isUpdating = computed(() => loadingUpdateState.value === "loading");
+
+const loadingContactState = ref("loading");
+const loadContactError = ref({});
+
+const currentStateContact = ref({});
 onBeforeMount(async () => {
   const fetchContact = await fetch(`/api/contacts/${id.value}`);
 
@@ -33,65 +35,26 @@ onBeforeMount(async () => {
     loadContactError.value = await fetchContact.json();
     loadingContactState.value = "error";
   } else {
-    contacts.value = await fetchContact.json();
+    currentStateContact.value = await fetchContact.json();
 
-    form.firstName = contacts.value.firstName;
-    form.lastName = contacts.value.lastName;
-    form.email = contacts.value.email;
-    form.phoneNumber = contacts.value.phoneNumber;
+    form.firstName = currentStateContact.value.firstName;
+    form.lastName = currentStateContact.value.lastName;
+    form.email = currentStateContact.value.email;
+    form.phoneNumber = currentStateContact.value.phoneNumber;
 
     loadingContactState.value = "success";
   }
 });
 
 const handleSubmit = async () => {
-  updateErrors.firstName = [];
-  updateErrors.lastName = [];
-  updateErrors.email = [];
-  updateErrors.phoneNumber = [];
-
-  errorResponse.value = {};
-
-  loadingUpdateState.value = "loading";
-  const saveRequest = await fetch(`/api/contacts/${id.value}`, {
-    body: JSON.stringify(form),
-    headers: {
-      "Content-type": "application/json",
-    },
-    method: "PATCH",
-  });
-
-  if (saveRequest.status !== 200) {
-    errorResponse.value = await saveRequest.json();
-
-    if (saveRequest.status === 400) {
-      for (let err of errorResponse.value.message) {
-        if (err.includes("firstName")) {
-          updateErrors.firstName.push(err.replace("firstName", "This field"));
-        } else if (err.includes("lastName")) {
-          updateErrors.lastName.push(err.replace("lastName", "This field"));
-        } else if (err.includes("email")) {
-          updateErrors.email.push(err.replace("email", "This field"));
-        } else if (err.includes("phoneNumber")) {
-          updateErrors.phoneNumber.push(
-            err.replace("phoneNumber", "This field")
-          );
-        }
-      }
-    }
-
-    loadingUpdateState.value = "error";
-  } else {
-    updatedContact.value = await saveRequest.json();
-    loadingUpdateState.value = "success";
-  }
+  store.updateContact(parseInt(id.value), form);
 };
 
 const resetForm = () => {
-  form.firstName = contacts.value.firstName;
-  form.lastName = contacts.value.lastName;
-  form.email = contacts.value.email;
-  form.phoneNumber = contacts.value.phoneNumber;
+  form.firstName = currentStateContact.value.firstName;
+  form.lastName = currentStateContact.value.lastName;
+  form.email = currentStateContact.value.email;
+  form.phoneNumber = currentStateContact.value.phoneNumber;
 };
 </script>
 
@@ -179,7 +142,7 @@ const resetForm = () => {
     </div>
 
     <button type="submit" :disabled="isUpdating">Update</button>
-    <button @click="resetForm">Discard changes</button>
+    <button type="button" @click="resetForm">Discard changes</button>
   </form>
   <div v-if="isUpdating">Updating...</div>
 </template>
