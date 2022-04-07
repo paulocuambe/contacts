@@ -41,8 +41,8 @@ export class ContactsEventsListener {
   handleContactDeleteEvent(event: any) {
     this.contactsEventsRepository.save(
       this.getLog(event, {
-        log_type: 'update',
-        description: 'update contact',
+        log_type: 'delete',
+        description: 'delete contact',
       }),
     );
   }
