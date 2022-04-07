@@ -5,9 +5,9 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <div class="my-10">
     <header class="container mx-auto">
-      <nav class="flex justify-between">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink :to="{ name: 'contacts.new' }">
+      <nav class="flex flex-wrap gap-4">
+        <RouterLink class="text-lg" to="/">Home</RouterLink>
+        <RouterLink class="secondary-link" :to="{ name: 'contacts.new' }">
           Add a new contact
         </RouterLink>
       </nav>

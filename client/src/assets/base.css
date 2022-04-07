@@ -10,6 +10,9 @@ a:hover {
     @apply text-blue-900 underline;
 }
 
+a.router-link-exact-active {
+    @apply underline;
+}
 button {
     @apply py-[.125rem] px-2 border rounded border-black bg-gray-100 text-black;
 }
@@ -37,6 +40,17 @@ label {
     @apply rounded text-black py-[.125rem] px-2 bg-gray-200;
 }
 
+.secondary-link:hover {
+    @apply text-gray-900 bg-gray-300;
+}
+
+.secondary-link.router-link-exact-active {
+    @apply bg-gray-400;
+}
+
+.secondary-link.router-link-exact-active:hover {
+    @apply bg-gray-300;
+}
 .badge,
 .badge-primary,
 .badge-danger {
@@ -51,9 +65,6 @@ label {
     @apply text-red-900 bg-red-200;
 }
 
-.secondary-link:hover {
-    @apply text-gray-700 bg-gray-300;
-}
 .error-message {
     @apply text-red-600 mt-1;
 }
