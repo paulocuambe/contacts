@@ -42,77 +42,99 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-  <h1>Add a new contact to your list</h1>
-  <form @submit.prevent="handleSubmit">
-    <div>
-      <label for="firstName">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        required
-        :disabled="isLoading"
-        placeholder="Paulo"
-        v-model="form.firstName"
-      />
-      <p
-        style="color: red"
-        v-for="(err, index) in error.firstName"
-        :key="index"
-      >
-        {{ err }}
-      </p>
-    </div>
-
-    <div>
-      <label for="lastName">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        required
-        :disabled="isLoading"
-        placeholder="Cuambe"
-        v-model="form.lastName"
-      />
-      <p style="color: red" v-for="(err, index) in error.lastName" :key="index">
-        {{ err }}
-      </p>
-    </div>
-
-    <div>
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        required
-        :disabled="isLoading"
-        placeholder="p@gosenx.com"
-        v-model="form.email"
-      />
-      <p style="color: red" v-for="(err, index) in error.email" :key="index">
-        {{ err }}
-      </p>
-    </div>
-
-    <div>
-      <label for="phoneNumber">Phone Number</label>
-      <input
-        type="tel"
-        id="phoneNumber"
-        required
-        :disabled="isLoading"
-        placeholder="+258849388793"
-        v-model="form.phoneNumber"
-      />
-      <p
-        style="color: red"
-        v-for="(err, index) in error.phoneNumber"
-        :key="index"
-      >
-        {{ err }}
-      </p>
-    </div>
-
-    <button type="submit" :disabled="isLoading">Add new contact</button>
-  </form>
-  <div v-if="isLoading">Saving...</div>
+  <div class="mx-4 md:mx-0 mt-10">
+    <h2 class="text-black font-bold text-2xl">
+      Add a new contact to your list
+    </h2>
+    <form @submit.prevent="handleSubmit" class="mt-4 lg:w-2/3 xl:w-1/2">
+      <div class="md:mb-4 md:flex md:gap-4">
+        <div class="w-full mb-4 md:mb-0">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            required
+            :disabled="isLoading"
+            placeholder="Paulo"
+            v-model="form.firstName"
+          />
+          <p
+            class="error-message"
+            v-for="(err, index) in error.firstName"
+            :key="index"
+          >
+            {{ err }}
+          </p>
+        </div>
+        <div class="w-full mb-4 md:mb-0">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            required
+            :disabled="isLoading"
+            placeholder="Cuambe"
+            v-model="form.lastName"
+          />
+          <p
+            class="error-message"
+            v-for="(err, index) in error.lastName"
+            :key="index"
+          >
+            {{ err }}
+          </p>
+        </div>
+      </div>
+      <div class="md:mb-4 md:flex md:gap-4">
+        <div class="w-full mb-4 md:mb-0">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            required
+            :disabled="isLoading"
+            placeholder="p@gosenx.com"
+            v-model="form.email"
+          />
+          <p
+            class="error-message"
+            v-for="(err, index) in error.email"
+            :key="index"
+          >
+            {{ err }}
+          </p>
+        </div>
+        <div class="w-full mb-4 md:mb-0">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            required
+            :disabled="isLoading"
+            placeholder="+258849388793"
+            v-model="form.phoneNumber"
+          />
+          <p
+            class="error-message"
+            v-for="(err, index) in error.phoneNumber"
+            :key="index"
+          >
+            {{ err }}
+          </p>
+        </div>
+      </div>
+      <button type="submit" :disabled="isLoading">Add new contact</button>
+    </form>
+    <div v-if="isLoading">Saving...</div>
+  </div>
 </template>
+
+<style scoped>
+input {
+  @apply w-full border border-gray-600 rounded px-2 py-1;
+}
+
+label {
+  @apply font-bold;
+}
+</style>

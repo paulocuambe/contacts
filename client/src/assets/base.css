@@ -43,6 +43,10 @@ button:hover {
 .badge-danger {
     @apply text-red-900 bg-red-200;
 }
+
 .secondary-link:hover {
     @apply text-gray-700 bg-gray-300;
+}
+.error-message {
+    @apply text-red-600 mt-1;
 }

@@ -76,7 +76,7 @@ const resetForm = () => {
         v-model="form.firstName"
       />
       <p
-        style="color: red"
+        class="error-message"
         v-for="(err, index) in updateErrors.firstName"
         :key="index"
       >
@@ -95,7 +95,7 @@ const resetForm = () => {
         v-model="form.lastName"
       />
       <p
-        style="color: red"
+        class="error-message"
         v-for="(err, index) in updateErrors.lastName"
         :key="index"
       >
@@ -114,7 +114,7 @@ const resetForm = () => {
         v-model="form.email"
       />
       <p
-        style="color: red"
+        class="error-message"
         v-for="(err, index) in updateErrors.email"
         :key="index"
       >
@@ -133,7 +133,7 @@ const resetForm = () => {
         v-model="form.phoneNumber"
       />
       <p
-        style="color: red"
+        class="error-message"
         v-for="(err, index) in updateErrors.phoneNumber"
         :key="index"
       >
