@@ -16,23 +16,21 @@ const deleteItem = async (id) => {
 </script>
 
 <template>
-  <main class="container mx-auto">
-    <div class="mx-4 md:mx-0 mt-10">
-      <div v-if="loadingState === 'loading'">Loading contacts...</div>
-      <div v-else-if="loadingState === 'error'">Error: {{ error.message }}</div>
-      <div v-else-if="contacts.length === 0">
-        <h2>
-          You have not added any contacts yet.
-          <RouterLink :to="{ name: 'contacts.new' }">
-            Click here to add friends to your list
-          </RouterLink>
-        </h2>
-      </div>
-      <contact-item-list
-        v-else
-        :contacts-list="contacts"
-        @delete-item="deleteItem"
-      ></contact-item-list>
+  <div class="mx-4 md:mx-0 mt-10">
+    <div v-if="loadingState === 'loading'">Loading contacts...</div>
+    <div v-else-if="loadingState === 'error'">Error: {{ error.message }}</div>
+    <div v-else-if="contacts.length === 0">
+      <h2>
+        You have not added any contacts yet.
+        <RouterLink :to="{ name: 'contacts.new' }">
+          Click here to add friends to your list
+        </RouterLink>
+      </h2>
     </div>
-  </main>
+    <contact-item-list
+      v-else
+      :contacts-list="contacts"
+      @delete-item="deleteItem"
+    ></contact-item-list>
+  </div>
 </template>

@@ -1,4 +1,7 @@
 <script setup>
+import ContactDetails from "../components/ContactDetails.vue";
+import LogDetailsTable from "../components/LogDetailsTable.vue";
+
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -35,33 +38,27 @@ onBeforeMount(async () => {
 });
 </script>
 <template>
-  <div v-if="loadingContactState === 'loading'">Loading contact info...</div>
-  <div v-else-if="loadingContactState === 'error'">
-    Error: {{ error.message }}
-  </div>
-  <div v-else>
-    <div>
-      <h1>Contact details</h1>
-      <p>Name: {{ contact.firstName }} {{ contact.firstName }}</p>
-      <p>Email: {{ contact.email }}</p>
-      <p>Phone number: {{ contact.phoneNumber }}</p>
-      <p>Updated At: {{ contact.updated_at }}</p>
-      <p>Created At: {{ contact.created_at }}</p>
+  <div class="mx-4 md:mx-0 mt-10">
+    <div v-if="loadingContactState === 'loading'">Loading contact info...</div>
+    <div v-else-if="loadingContactState === 'error'">
+      Error: {{ error.message }}
     </div>
+    <div v-else>
+      <div>
+        <h2 class="text-gray-600">Contact details</h2>
+        <contact-details class="mt-4" :contact="contact"></contact-details>
+      </div>
+      <div>
+        <div v-if="loadingLogState === 'loading'">Loading logs...</div>
+        <div v-else-if="loadingLogState === 'error'">
+          Error: {{ logError.message }}
+        </div>
 
-    <div>
-      <div v-if="loadingLogState === 'loading'">Loading logs...</div>
-      <div v-else-if="loadingLogState === 'error'">
-        Error: {{ logError.message }}
+        <div class="mt-10" v-else>
+          <h2 class="text-xl text-bold text-gray-700 mb-4">Action logs</h2>
+          <log-details-table :logs="logs"></log-details-table>
+        </div>
       </div>
-      <div v-else-if="logs.length === 0">
-        <h2>This contacts has no logs</h2>
-      </div>
-      <ul v-else>
-        <li v-for="log in logs" :key="log.id">
-          {{ log.log_type }} - {{ log.description }}
-        </li>
-      </ul>
     </div>
   </div>
 </template>

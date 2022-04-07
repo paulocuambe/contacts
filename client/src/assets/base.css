@@ -25,10 +25,24 @@ button:hover {
     @apply bg-red-200;
 }
 
+
 .secondary-link {
     @apply rounded text-black py-[.125rem] px-2 bg-gray-200;
 }
 
+.badge,
+.badge-primary,
+.badge-danger {
+    @apply rounded text-sm text-black py-[.125rem] px-2 bg-gray-200;
+}
+
+.badge-primary {
+    @apply text-blue-900 bg-blue-200;
+}
+
+.badge-danger {
+    @apply text-red-900 bg-red-200;
+}
 .secondary-link:hover {
     @apply text-gray-700 bg-gray-300;
 }
