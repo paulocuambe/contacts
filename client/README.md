@@ -1,14 +1,11 @@
 # client
 
-This template should help get you started developing with Vue 3 in Vite.
+This is the frontend app.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Prerequisites
+To run the frontend client you will need:
+- Node >= 12.2.0
+- Start the backend app. Due to the usage of the proxy feature in vite to forward request to the server, the backend should be started first, so no errors are showed while runnig the app.
 
 ## Project Setup
 
@@ -22,20 +19,5 @@ npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+### Live
+Visit http://localhost:3000
