@@ -34,7 +34,7 @@ defineProps({
             <span
               :class="{
                 'badge-primary': log.log_type === 'update',
-                'bagde-danger': log.log_type === 'delete',
+                'badge-danger': log.log_type === 'delete',
                 badge: log.log_type === 'create',
               }"
             >
