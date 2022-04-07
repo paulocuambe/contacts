@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref } from "@vue/reactivity";
 import { computed, onBeforeMount } from "@vue/runtime-core";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { useContactStore } from "../stores/contact";
 
 document.title = "Update contact information";
@@ -59,6 +59,10 @@ const resetForm = () => {
   form.email = currentStateContact.value.email;
   form.phoneNumber = currentStateContact.value.phoneNumber;
 };
+
+onBeforeRouteLeave(() => {
+  store.resetSaveContactState();
+});
 </script>
 
 <template>
@@ -72,7 +76,7 @@ const resetForm = () => {
       {{ updateErrors.message }}
     </div>
     <form
-      v-else-if="![loadingContactState, loadingUpdateState].includes('error')"
+      v-if="loadingContactState !== 'error'"
       @submit.prevent="handleSubmit"
       class="mt-4 lg:w-2/3 xl:w-1/2"
     >
