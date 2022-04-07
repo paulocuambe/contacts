@@ -1,29 +1,17 @@
 <script setup>
 import ContactItemList from "../components/ContactItemList.vue";
-import { onBeforeMount } from "@vue/runtime-core";
-import { ref } from "vue";
+import { computed } from "@vue/runtime-core";
+import { useContactStore } from "../stores/contact";
 
-const contacts = ref([]);
-const loadingState = ref("loading");
-const error = ref({});
+const store = useContactStore();
+store.fetchContacts();
 
-onBeforeMount(async () => {
-  let request = await fetch("/api/contacts");
-  if (request.status != 200) {
-    error.value = await request.json();
-    loadingState.value = "error";
-  } else {
-    contacts.value = await request.json();
-    loadingState.value = "success";
-  }
-});
+const contacts = computed(() => store.contacts);
+const loadingState = computed(() => store.fetchContactsState);
+const error = computed(() => store.fetchContactError);
 
 const deleteItem = async (id) => {
-  await fetch(`/api/contacts/${id}`, {
-    method: "DELETE",
-  });
-
-  contacts.value = contacts.value.filter((contact) => contact.id !== id);
+  store.deleteContact(id);
 };
 </script>
 
@@ -32,7 +20,12 @@ const deleteItem = async (id) => {
     <div v-if="loadingState === 'loading'">Loading contacts...</div>
     <div v-else-if="loadingState === 'error'">Error: {{ error.message }}</div>
     <div v-else-if="contacts.length === 0">
-      <h2>You have not added any contacts yet. Click here to get started</h2>
+      <h2>
+        You have not added any contacts yet.
+        <RouterLink :to="{ name: 'contacts.new' }">
+          Click here to add friends to your list
+        </RouterLink>
+      </h2>
     </div>
     <contact-item-list
       v-else

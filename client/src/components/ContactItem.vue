@@ -1,14 +1,33 @@
 <script setup>
 import { computed } from "@vue/runtime-core";
 import { RouterLink } from "vue-router";
+import { useContactStore } from "../stores/contact";
 
-defineEmits(["delete"]);
 const props = defineProps({
   contact: {
     type: Object,
     required: true,
   },
 });
+
+defineEmits(["delete"]);
+
+const store = useContactStore();
+const deletingState = computed(() => {
+  if (store.deleteContactId === props.contact.id) {
+    return store.deletingContactsState;
+  }
+});
+
+const deleteContactError = computed(() => {
+  if (store.deleteContactId === props.contact.id) {
+    return store.deleteContactError;
+  }
+});
+
+const deleteText = computed(() =>
+  deletingState.value === "loading" ? "Deleting..." : "Delete"
+);
 
 const fullName = computed(
   () => props.contact.firstName + " " + props.contact.lastName
@@ -27,6 +46,11 @@ const fullName = computed(
       Details
     </RouterLink>
     -
-    <button @click="$emit('delete')">Delete</button>
+    <button :disabled="deletingState === 'loading'" @click="$emit('delete')">
+      {{ deleteText }}
+    </button>
+    <span v-if="deletingState === 'error'">
+      Error: {{ deleteContactError.message }}
+    </span>
   </div>
 </template>
