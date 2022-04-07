@@ -34,9 +34,9 @@ export const useContactStore = defineStore({
       this.fetchContactsState = "loading";
       let request = await fetch("/api/contacts");
 
-      if (request.status != 200) {
-        this.error = await request.json();
-        this.fetchContactError = "error";
+      if (request.status !== 200) {
+        this.fetchContactError = await request.json();
+        this.fetchContactsState = "error";
       } else {
         this.contacts = await request.json();
         this.fetchContactsState = "success";
