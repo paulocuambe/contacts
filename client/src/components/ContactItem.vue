@@ -1,4 +1,7 @@
 <script setup>
+import IcBaselineCall from "./IcBaselineCall.vue";
+import IcBaselineMailOutline from "./IcBaselineMailOutline.vue";
+
 import { computed } from "@vue/runtime-core";
 import { RouterLink } from "vue-router";
 import { useContactStore } from "../stores/contact";
@@ -35,22 +38,54 @@ const fullName = computed(
 </script>
 
 <template>
-  <div>
-    <span>{{ fullName }}</span>
-    -
-    <RouterLink :to="{ name: 'contact.update', params: { id: contact.id } }">
-      Update
-    </RouterLink>
-    -
-    <RouterLink :to="{ name: 'contact.details', params: { id: contact.id } }">
-      Details
-    </RouterLink>
-    -
-    <button :disabled="deletingState === 'loading'" @click="$emit('delete')">
-      {{ deleteText }}
-    </button>
+  <div class="contact-item">
+    <h2 class="text-2xl font-bold">{{ fullName }}</h2>
+    <div class="mt-4 flex justify-between gap-2 flex-wrap">
+      <p class="contact-method">
+        <ic-baseline-call
+          class="text-gray-600"
+          size="1.5rem"
+        ></ic-baseline-call>
+        <a :href="'tel:' + contact.phoneNumber" class="text-lg">
+          {{ contact.phoneNumber }}
+        </a>
+      </p>
+      <p class="contact-method">
+        <ic-baseline-mail-outline
+          class="text-gray-600"
+          size="1.5rem"
+        ></ic-baseline-mail-outline>
+        <a :href="'mailto:' + contact.email" class="text-lg">
+          {{ contact.email }}
+        </a>
+      </p>
+    </div>
+
+    <div class="mt-4 flex items-center gap-4">
+      <RouterLink :to="{ name: 'contact.update', params: { id: contact.id } }">
+        Update
+      </RouterLink>
+
+      <RouterLink :to="{ name: 'contact.details', params: { id: contact.id } }">
+        Details
+      </RouterLink>
+
+      <button :disabled="deletingState === 'loading'" @click="$emit('delete')">
+        {{ deleteText }}
+      </button>
+    </div>
     <span v-if="deletingState === 'error'">
       Error: {{ deleteContactError.message }}
     </span>
   </div>
 </template>
+
+<style scoped>
+.contact-item {
+  @apply p-6 shadow-lg rounded-md border;
+}
+
+.contact-method {
+  @apply flex items-center gap-3;
+}
+</style>

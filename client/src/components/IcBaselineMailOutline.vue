@@ -1,0 +1,23 @@
+<script>
+export default {
+  name: "IcBaselineMailOutline",
+};
+</script>
+
+<script setup>
+const props = defineProps({
+  size: {
+    type: String,
+    default: "1em",
+  },
+});
+</script>
+
+<template>
+  <svg :width="props.size" :height="props.size" viewBox="0 0 24 24">
+    <path
+      fill="currentColor"
+      d="m20 8l-8 5l-8-5V6l8 5l8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Z"
+    ></path>
+  </svg>
+</template>
