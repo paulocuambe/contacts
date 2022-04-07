@@ -1,6 +1,8 @@
 <script setup>
 import ContactItem from "./ContactItem.vue";
 
+defineEmits(["deleteItem"]);
+
 defineProps({
   contactsList: {
     type: Array,
@@ -13,6 +15,7 @@ defineProps({
       v-for="contact in contactsList"
       :key="contact.id"
       :contact="contact"
+      @delete="$emit('deleteItem', contact.id)"
     ></contact-item>
   </div>
 </template>

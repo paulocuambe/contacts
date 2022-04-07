@@ -17,6 +17,14 @@ onBeforeMount(async () => {
     loadingState.value = "success";
   }
 });
+
+const deleteItem = async (id) => {
+  await fetch(`/api/contacts/${id}`, {
+    method: "DELETE",
+  });
+
+  contacts.value = contacts.value.filter((contact) => contact.id !== id);
+};
 </script>
 
 <template>
@@ -26,6 +34,10 @@ onBeforeMount(async () => {
     <div v-else-if="contacts.length === 0">
       <h2>You have not added any contacts yet. Click here to get started</h2>
     </div>
-    <contact-item-list v-else :contacts-list="contacts"></contact-item-list>
+    <contact-item-list
+      v-else
+      :contacts-list="contacts"
+      @delete-item="deleteItem"
+    ></contact-item-list>
   </main>
 </template>

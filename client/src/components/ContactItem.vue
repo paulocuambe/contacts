@@ -2,6 +2,7 @@
 import { computed } from "@vue/runtime-core";
 import { RouterLink } from "vue-router";
 
+defineEmits(["delete"]);
 const props = defineProps({
   contact: {
     type: Object,
@@ -16,7 +17,8 @@ const fullName = computed(
 
 <template>
   <div>
-    <span>{{ fullName }}</span> -
+    <span>{{ fullName }}</span>
+    -
     <RouterLink :to="{ name: 'contact.update', params: { id: contact.id } }">
       Update
     </RouterLink>
@@ -24,5 +26,7 @@ const fullName = computed(
     <RouterLink :to="{ name: 'contact.details', params: { id: contact.id } }">
       Details
     </RouterLink>
+    -
+    <button @click="$emit('delete')">Delete</button>
   </div>
 </template>
