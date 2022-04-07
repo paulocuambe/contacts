@@ -3,6 +3,8 @@ import ContactItemList from "../components/ContactItemList.vue";
 import { computed } from "@vue/runtime-core";
 import { useContactStore } from "../stores/contact";
 
+document.title = "Contacts App";
+
 const store = useContactStore();
 store.fetchContacts();
 

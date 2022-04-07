@@ -4,6 +4,8 @@ import { computed, watch } from "@vue/runtime-core";
 import { onBeforeRouteLeave } from "vue-router";
 import { useContactStore } from "../stores/contact";
 
+document.title = "Add contact";
+
 const store = useContactStore();
 
 const form = reactive({

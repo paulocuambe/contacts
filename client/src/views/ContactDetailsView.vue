@@ -5,6 +5,8 @@ import LogDetailsTable from "../components/LogDetailsTable.vue";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
+document.title = "View contact details";
+
 const id = ref(useRoute().params.id);
 const loadingContactState = ref("loading");
 const contact = ref({});

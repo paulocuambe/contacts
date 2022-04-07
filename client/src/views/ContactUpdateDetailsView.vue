@@ -4,6 +4,8 @@ import { computed, onBeforeMount } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
 import { useContactStore } from "../stores/contact";
 
+document.title = "Update contact information";
+
 const id = ref(useRoute().params.id);
 const store = useContactStore();
 
