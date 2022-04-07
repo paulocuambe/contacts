@@ -10,7 +10,7 @@ defineProps({
 });
 </script>
 <template>
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
     <contact-item
       v-for="contact in contactsList"
       :key="contact.id"

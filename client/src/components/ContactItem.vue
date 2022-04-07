@@ -38,42 +38,54 @@ const fullName = computed(
 </script>
 
 <template>
-  <div class="contact-item">
-    <h2 class="text-2xl font-bold">{{ fullName }}</h2>
-    <div class="mt-4 flex justify-between gap-2 flex-wrap">
-      <p class="contact-method">
-        <ic-baseline-call
-          class="text-gray-600"
-          size="1.5rem"
-        ></ic-baseline-call>
-        <a :href="'tel:' + contact.phoneNumber" class="text-lg">
-          {{ contact.phoneNumber }}
-        </a>
-      </p>
-      <p class="contact-method">
-        <ic-baseline-mail-outline
-          class="text-gray-600"
-          size="1.5rem"
-        ></ic-baseline-mail-outline>
-        <a :href="'mailto:' + contact.email" class="text-lg">
-          {{ contact.email }}
-        </a>
-      </p>
-    </div>
+  <div class="contact-item flex flex-col justify-between">
+    <section class="p-6 pb-0">
+      <h2 class="text-2xl font-bold">{{ fullName }}</h2>
+      <div class="mt-4 flex justify-between gap-2 flex-wrap">
+        <p class="contact-method">
+          <ic-baseline-call
+            class="text-gray-600"
+            size="1.5rem"
+          ></ic-baseline-call>
+          <a :href="'tel:' + contact.phoneNumber" class="text-lg">
+            {{ contact.phoneNumber }}
+          </a>
+        </p>
+        <p class="contact-method">
+          <ic-baseline-mail-outline
+            class="text-gray-600"
+            size="1.5rem"
+          ></ic-baseline-mail-outline>
+          <a :href="'mailto:' + contact.email" class="text-lg">
+            {{ contact.email }}
+          </a>
+        </p>
+      </div>
+    </section>
 
-    <div class="mt-4 flex items-center gap-4">
-      <RouterLink :to="{ name: 'contact.update', params: { id: contact.id } }">
+    <section class="contact-actions p-6">
+      <RouterLink
+        class="secondary-link"
+        :to="{ name: 'contact.update', params: { id: contact.id } }"
+      >
         Update
       </RouterLink>
 
-      <RouterLink :to="{ name: 'contact.details', params: { id: contact.id } }">
-        Details
+      <RouterLink
+        class="secondary-link"
+        :to="{ name: 'contact.details', params: { id: contact.id } }"
+      >
+        More Details
       </RouterLink>
 
-      <button :disabled="deletingState === 'loading'" @click="$emit('delete')">
+      <button
+        class="btn-dangerous"
+        :disabled="deletingState === 'loading'"
+        @click="$emit('delete')"
+      >
         {{ deleteText }}
       </button>
-    </div>
+    </section>
     <span v-if="deletingState === 'error'">
       Error: {{ deleteContactError.message }}
     </span>
@@ -82,10 +94,14 @@ const fullName = computed(
 
 <style scoped>
 .contact-item {
-  @apply p-6 shadow-lg rounded-md border;
+  @apply shadow-lg rounded-lg border;
 }
 
 .contact-method {
   @apply flex items-center gap-3;
+}
+
+.contact-actions {
+  @apply bg-gray-100 mt-4 flex items-center gap-4;
 }
 </style>

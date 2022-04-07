@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 a {
     @apply text-blue-800;
 }
@@ -15,4 +16,19 @@ button {
 
 button:hover {
     @apply bg-gray-200;
+}
+.btn-dangerous {
+    @apply bg-red-100 border-0;
+}
+
+.btn-dangerous:hover {
+    @apply bg-red-200;
+}
+
+.secondary-link {
+    @apply rounded text-black py-[.125rem] px-2 bg-gray-200;
+}
+
+.secondary-link:hover {
+    @apply text-gray-700 bg-gray-300;
 }
