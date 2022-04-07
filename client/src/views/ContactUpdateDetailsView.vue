@@ -19,6 +19,7 @@ const updateErrors = reactive({
   lastName: computed(() => store.saveContactErrors.lastName),
   email: computed(() => store.saveContactErrors.email),
   phoneNumber: computed(() => store.saveContactErrors.phoneNumber),
+  message: computed(() => store.saveContactErrors.message),
 });
 
 const loadingUpdateState = computed(() => store.savingContactState);
@@ -62,10 +63,17 @@ const resetForm = () => {
   <div class="mx-4 md:mx-0 mt-10">
     <h2 class="text-black font-bold text-2xl">Update contact information</h2>
     <div v-if="loadingContactState === 'loading'">Loading form...</div>
-    <div v-if="loadingContactState === 'error'">
+    <div class="error-message" v-if="loadingContactState === 'error'">
       {{ loadContactError.message }}
     </div>
-    <form v-else @submit.prevent="handleSubmit" class="mt-4 lg:w-2/3 xl:w-1/2">
+    <div class="error-message" v-if="updateErrors.message">
+      {{ updateErrors.message }}
+    </div>
+    <form
+      v-else-if="![loadingContactState, loadingUpdateState].includes('error')"
+      @submit.prevent="handleSubmit"
+      class="mt-4 lg:w-2/3 xl:w-1/2"
+    >
       <div class="md:mb-4 md:flex md:gap-4">
         <div class="w-full mb-4 md:mb-0">
           <label for="firstName">First Name</label>
