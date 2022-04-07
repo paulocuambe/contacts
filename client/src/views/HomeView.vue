@@ -2,6 +2,7 @@
 import ContactItemList from "../components/ContactItemList.vue";
 import { computed } from "@vue/runtime-core";
 import { useContactStore } from "../stores/contact";
+import { onBeforeRouteLeave } from "vue-router";
 
 document.title = "Contacts App";
 
@@ -15,6 +16,10 @@ const error = computed(() => store.fetchContactError);
 const deleteItem = async (id) => {
   store.deleteContact(id);
 };
+
+onBeforeRouteLeave(() => {
+  store.resetDeleteAndFetchState();
+});
 </script>
 
 <template>

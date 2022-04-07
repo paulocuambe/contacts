@@ -23,8 +23,12 @@ export const useContactStore = defineStore({
   }),
 
   actions: {
-    emptCache() {
-      this.cached = false;
+    resetDeleteAndFetchState() {
+      this.deleteContactError = {};
+      this.deletingContactsState = "";
+
+      this.fetchContactsState = "";
+      this.fetchContactError = "";
     },
 
     async fetchContacts() {
