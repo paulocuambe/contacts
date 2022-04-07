@@ -37,7 +37,7 @@ export class ContactsEventsListener {
     );
   }
 
-  @OnEvent('contact.delete')
+  @OnEvent('contact.deleted')
   handleContactDeleteEvent(event: any) {
     this.contactsEventsRepository.save(
       this.getLog(event, {
