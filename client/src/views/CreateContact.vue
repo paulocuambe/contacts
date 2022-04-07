@@ -1,6 +1,10 @@
 <script setup>
-import { reactive, ref } from "@vue/reactivity";
-import { computed } from "@vue/runtime-core";
+import { reactive } from "@vue/reactivity";
+import { computed, watch } from "@vue/runtime-core";
+import { onBeforeRouteLeave } from "vue-router";
+import { useContactStore } from "../stores/contact";
+
+const store = useContactStore();
 
 const form = reactive({
   firstName: null,
@@ -10,59 +14,31 @@ const form = reactive({
 });
 
 const error = reactive({
-  firstName: [],
-  lastName: [],
-  email: [],
-  phoneNumber: [],
+  firstName: computed(() => store.saveContactErrors.firstName),
+  lastName: computed(() => store.saveContactErrors.lastName),
+  email: computed(() => store.saveContactErrors.email),
+  phoneNumber: computed(() => store.saveContactErrors.phoneNumber),
 });
 
-const errorResponse = ref({});
-
-const loadingState = ref("idle");
+const loadingState = computed(() => store.savingContactState);
 const isLoading = computed(() => loadingState.value === "loading");
 
-const savedContact = ref({});
+watch(loadingState, (newValue) => {
+  if (newValue === "success") {
+    form.firstName = null;
+    form.lastName = null;
+    form.email = null;
+    form.phoneNumber = null;
+  }
+});
 
 const handleSubmit = async () => {
-  error.firstName = [];
-  error.lastName = [];
-  error.email = [];
-  error.phoneNumber = [];
-
-  errorResponse.value = {};
-
-  loadingState.value = "loading";
-  const saveRequest = await fetch(`/api/contacts`, {
-    body: JSON.stringify(form),
-    headers: {
-      "Content-type": "application/json",
-    },
-    method: "POST",
-  });
-
-  if (saveRequest.status !== 200) {
-    errorResponse.value = await saveRequest.json();
-
-    if (saveRequest.status === 400) {
-      for (let err of errorResponse.value.message) {
-        if (err.includes("firstName")) {
-          error.firstName.push(err.replace("firstName", "This field"));
-        } else if (err.includes("lastName")) {
-          error.lastName.push(err.replace("lastName", "This field"));
-        } else if (err.includes("email")) {
-          error.email.push(err.replace("email", "This field"));
-        } else if (err.includes("phoneNumber")) {
-          error.phoneNumber.push(err.replace("phoneNumber", "This field"));
-        }
-      }
-    }
-
-    loadingState.value = "error";
-  } else {
-    savedContact.value = await saveRequest.json();
-    loadingState.value = "success";
-  }
+  store.saveContact(form);
 };
+
+onBeforeRouteLeave(() => {
+  store.resetSaveContactState();
+});
 </script>
 
 <template>

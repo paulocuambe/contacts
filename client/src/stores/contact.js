@@ -7,10 +7,19 @@ export const useContactStore = defineStore({
     contacts: [],
     cached: false,
     deleteContactId: "",
+
     fetchContactsState: "",
+    savingContactState: "",
     deletingContactsState: "",
+
     fetchContactError: {},
     deleteContactError: {},
+    saveContactErrors: {
+      firstName: [],
+      lastName: [],
+      email: [],
+      phoneNumber: [],
+    },
   }),
 
   actions: {
@@ -35,6 +44,50 @@ export const useContactStore = defineStore({
       }
     },
 
+    resetSaveContactState() {
+      this.savingContactState = "";
+      this.saveContactErrors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phoneNumber: [],
+      };
+    },
+
+    async saveContact(contact) {
+      this.saveContactErrors = {
+        firstName: [],
+        lastName: [],
+        email: [],
+        phoneNumber: [],
+      };
+
+      this.savingContactState = "loading";
+      const saveRequest = await fetch(`/api/contacts`, {
+        body: JSON.stringify(contact),
+        headers: {
+          "Content-type": "application/json",
+        },
+        method: "POST",
+      });
+
+      let errorResponse = {};
+      if (saveRequest.status !== 201) {
+        errorResponse = await saveRequest.json();
+
+        if (saveRequest.status === 400) {
+          this.saveContactErrors = mappedValidationErrors(
+            errorResponse.message
+          );
+        }
+
+        this.savingContactState = "error";
+      } else {
+        this.contacts.unshift(await saveRequest.json());
+        this.savingContactState = "success";
+      }
+    },
+
     async deleteContact(id) {
       this.deleteContactId = id;
       this.deletingContactsState = "loading";
@@ -55,3 +108,39 @@ export const useContactStore = defineStore({
     },
   },
 });
+
+// Separate validation errors by property
+function mappedValidationErrors(message) {
+  let contactErrors = {
+    firstName: [],
+    lastName: [],
+    email: [],
+    phoneNumber: [],
+  };
+
+  let groupError = (error, renameField = true) => {
+    if (error.includes("firstName")) {
+      error = renameField ? error.replace("firstName", "This field") : error;
+      contactErrors.firstName.push(error);
+    } else if (error.includes("lastName")) {
+      error = renameField ? error.replace("lastName", "This field") : error;
+      contactErrors.lastName.push(error);
+    } else if (error.includes("email")) {
+      error = renameField ? error.replace("email", "This field") : error;
+      contactErrors.email.push(error);
+    } else if (error.includes("phoneNumber")) {
+      error = renameField ? error.replace("phoneNumber", "This field") : error;
+      contactErrors.phoneNumber.push(error);
+    }
+  };
+
+  if (Array.isArray(message)) {
+    for (let error of message) {
+      groupError(error);
+    }
+  } else {
+    groupError(message, false);
+  }
+
+  return contactErrors;
+}
