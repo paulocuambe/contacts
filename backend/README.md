@@ -21,3 +21,6 @@ $ docker-compose up # might need sudo depending on how it was installed
 # development
 $ npm run start:dev
 ```
+
+## Live
+The server is listening on port http://localhost:8080
