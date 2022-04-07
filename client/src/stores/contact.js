@@ -79,6 +79,8 @@ export const useContactStore = defineStore({
           this.saveContactErrors = mappedValidationErrors(
             errorResponse.message
           );
+        } else {
+          this.saveContactErrors = errorResponse;
         }
 
         this.savingContactState = "error";

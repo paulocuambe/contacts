@@ -18,6 +18,7 @@ const error = reactive({
   lastName: computed(() => store.saveContactErrors.lastName),
   email: computed(() => store.saveContactErrors.email),
   phoneNumber: computed(() => store.saveContactErrors.phoneNumber),
+  message: computed(() => store.saveContactErrors.message),
 });
 
 const loadingState = computed(() => store.savingContactState);
@@ -46,6 +47,7 @@ onBeforeRouteLeave(() => {
     <h2 class="text-black font-bold text-2xl">
       Add a new contact to your list
     </h2>
+    <div class="error-message" v-if="error.message">{{ error.message }}</div>
     <form @submit.prevent="handleSubmit" class="mt-4 lg:w-2/3 xl:w-1/2">
       <div class="md:mb-4 md:flex md:gap-4">
         <div class="w-full mb-4 md:mb-0">
