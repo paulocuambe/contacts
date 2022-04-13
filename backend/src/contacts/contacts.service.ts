@@ -6,6 +6,7 @@ import { Contact } from './entities/contact.entity';
 import { CreateContactDo } from './dto/create-contact.dto';
 import { UpdateContactDo } from './dto/update-contact.dto';
 import { ContactLog } from './entities/contact-log.entity';
+import { SearchParams } from './dto/SearchParams.dto';
 
 @Injectable()
 export class ContactsService {
@@ -16,15 +17,22 @@ export class ContactsService {
     private eventEmitter: EventEmitter2,
   ) {}
 
-  findAll(): Promise<Contact[]> {
-    return this.contactsRepository.find({
-      where: {
-        deleted: false,
-      },
-      order: {
-        created_at: 'DESC',
-      },
-    });
+  findAll(query?: SearchParams): Promise<Contact[]> {
+    const dbQuery = this.contactsRepository.createQueryBuilder('contact');
+
+    if (query.q) {
+      dbQuery.where(
+        `contact.firstName LIKE '%${query.q}%' or contact.lastName LIKE '%${query.q}%' or contact.email LIKE '%${query.q}%' or contact.phoneNumber LIKE '%${query.q}%'`,
+      );
+    }
+
+    if (['true', 'false'].includes(query.deleted)) {
+      dbQuery.andWhere(`contact.deleted = ${query.deleted}`);
+    }
+
+    console.log(dbQuery.getQuery());
+
+    return dbQuery.getMany();
   }
 
   async findById(id: number): Promise<Contact> {
