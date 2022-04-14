@@ -5,6 +5,12 @@ import IcCalendarEdit from "./IcCalendarEdit.vue";
 import IcCalendarDate from "./IcCalendarDate.vue";
 import { computed } from "vue-demi";
 import formatDate from "../utils/dates";
+import { useContactStore } from "../stores/contact";
+
+const store = useContactStore();
+
+const loadingRestoreState = computed(() => store.restoringContactsState);
+const isRestoring = computed(() => loadingRestoreState.value === "loading");
 
 const props = defineProps({
   contact: {
@@ -16,15 +22,27 @@ const props = defineProps({
 const fullName = computed(
   () => `${props.contact.firstName} ${props.contact.lastName}`
 );
+
+const restore = () => {
+  store.restoreContact(props.contact.id);
+};
 </script>
 
 <template>
   <div>
     <h1 class="text-3xl">
       {{ fullName }}
-      <span class="badge" v-if="contact.deleted">Deleted</span>
+      <span class="badge-danger" v-if="contact.deleted">Deleted</span>
     </h1>
     <div class="mt-4 flex gap-4 flex-wrap">
+      <form
+        v-if="contact.deleted || loadingRestoreState === 'success'"
+        @submit.prevent="restore"
+      >
+        <button :disabled="isRestoring">
+          {{ isRestoring ? "Restoring..." : "Restore" }}
+        </button>
+      </form>
       <p class="contact-method">
         <ic-baseline-call
           class="text-gray-600"

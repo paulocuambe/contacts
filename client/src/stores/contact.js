@@ -11,9 +11,11 @@ export const useContactStore = defineStore({
     fetchContactsState: "",
     savingContactState: "",
     deletingContactsState: "",
+    restoringContactsState: "",
 
     fetchContactError: {},
     deleteContactError: {},
+    restoreContactError: {},
     saveContactErrors: {
       firstName: [],
       lastName: [],
@@ -161,6 +163,27 @@ export const useContactStore = defineStore({
       } else {
         this.deleteContactError = await request.json();
         this.deletingContactsState = "error";
+      }
+    },
+
+    async restoreContact(id) {
+      this.deleteContactId = id;
+      this.restoringContactsState = "loading";
+
+      let request = await fetch(`/api/contacts/${id}/restore`, {
+        method: "POST",
+      });
+
+      if (request.status === 201) {
+        let restoredContact = await request.json();
+        this.contacts = this.contacts.map((contact) =>
+          contact.id !== id ? contact : restoredContact
+        );
+
+        this.restoringContactsState = "successs";
+      } else {
+        this.restoreContactError = await request.json();
+        this.restoringContactsState = "error";
       }
     },
   },

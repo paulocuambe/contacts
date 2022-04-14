@@ -65,6 +65,7 @@ const fullName = computed(
 
     <section class="contact-actions p-6">
       <RouterLink
+        v-if="!contact.deleted"
         class="secondary-link"
         :to="{ name: 'contact.update', params: { id: contact.id } }"
       >
@@ -79,6 +80,7 @@ const fullName = computed(
       </RouterLink>
 
       <button
+        v-if="!contact.deleted"
         class="btn-dangerous"
         :disabled="deletingState === 'loading'"
         @click="$emit('delete')"
