@@ -53,4 +53,9 @@ export class ContactsController {
   delete(@Param('id') id) {
     return this.contactsService.delete(id);
   }
+
+  @Post(':id/restore')
+  restore(@Param('id') id) {
+    return this.contactsService.restore(id);
+  }
 }

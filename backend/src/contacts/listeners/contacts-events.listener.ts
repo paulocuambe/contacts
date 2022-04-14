@@ -6,7 +6,7 @@ import { ContactLog } from '../entities/contact-log.entity';
 import { Contact } from '../entities/contact.entity';
 
 type LogFields = {
-  log_type: 'create' | 'update' | 'delete';
+  log_type: 'create' | 'update' | 'delete' | 'restore';
   description: string;
 };
 
@@ -38,11 +38,21 @@ export class ContactsEventsListener {
   }
 
   @OnEvent('contact.deleted')
-  handleContactDeleteEvent(event: any) {
+  handleContactRestoreEvent(event: any) {
     this.contactsEventsRepository.save(
       this.getLog(event, {
         log_type: 'delete',
         description: 'delete contact',
+      }),
+    );
+  }
+
+  @OnEvent('contact.restored')
+  handleContactDeleteEvent(event: any) {
+    this.contactsEventsRepository.save(
+      this.getLog(event, {
+        log_type: 'restore',
+        description: 'restore contact',
       }),
     );
   }

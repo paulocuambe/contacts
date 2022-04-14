@@ -22,7 +22,7 @@ export class ContactsService {
 
     if (query.q) {
       dbQuery.where(
-        `contact.firstName LIKE '%${query.q}%' or contact.lastName LIKE '%${query.q}%' or contact.email LIKE '%${query.q}%' or contact.phoneNumber LIKE '%${query.q}%'`,
+        `(contact.firstName LIKE '%${query.q}%' or contact.lastName LIKE '%${query.q}%' or contact.email LIKE '%${query.q}%' or contact.phoneNumber LIKE '%${query.q}%')`,
       );
     }
 
@@ -36,11 +36,7 @@ export class ContactsService {
   }
 
   async findById(id: number): Promise<Contact> {
-    return this.contactsRepository.findOneOrFail(id, {
-      where: {
-        deleted: false,
-      },
-    });
+    return this.contactsRepository.findOneOrFail(id);
   }
 
   async findLogs(id: number): Promise<ContactLog[]> {
@@ -101,6 +97,16 @@ export class ContactsService {
 
     contact = await this.contactsRepository.save(contact);
     this.eventEmitter.emit('contact.deleted', contact);
+
+    return contact;
+  }
+
+  async restore(id: number): Promise<Contact> {
+    let contact = await this.findById(id);
+    contact.deleted = false;
+
+    contact = await this.contactsRepository.save(contact);
+    this.eventEmitter.emit('contact.restored', contact);
 
     return contact;
   }
