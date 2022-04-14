@@ -31,12 +31,23 @@ export const useContactStore = defineStore({
       this.fetchContactError = "";
     },
 
-    async fetchContacts() {
-      if (this.cached) return;
+    async fetchContacts({ q, deleted }) {
+      // if (this.cached && !q && !deleted) return;
+      console.log("I GET HERE");
       this.fetchContactError = {};
 
+      let query = new URLSearchParams();
+
+      if (q) {
+        query.append("q", q);
+      }
+
+      if (deleted) {
+        query.append("deleted", deleted);
+      }
+
       this.fetchContactsState = "loading";
-      let request = await fetch("/api/contacts");
+      let request = await fetch(`/api/contacts?${query.toString()}`);
 
       if (request.status !== 200) {
         this.fetchContactError = await request.json();

@@ -13,6 +13,10 @@ const router = createRouter({
       path: "/contacts/new",
       name: "contacts.new",
       component: () => import("../views/CreateContact.vue"),
+      props: (route) => ({
+        query: route.query.q,
+        deleted: route.query.deleted,
+      }),
     },
     {
       path: "/contacts/:id",

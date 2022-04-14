@@ -24,6 +24,9 @@ input {
     @apply w-full border border-gray-600 rounded px-2 py-1;
 }
 
+input[type='checkbox'] {
+    @apply w-4;
+}
 label {
     @apply font-bold;
 }
