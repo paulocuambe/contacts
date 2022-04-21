@@ -3,14 +3,22 @@ import IcBaselineCall from "./IcBaselineCall.vue";
 import IcBaselineMailOutline from "./IcBaselineMailOutline.vue";
 import IcCalendarEdit from "./IcCalendarEdit.vue";
 import IcCalendarDate from "./IcCalendarDate.vue";
-import { computed } from "vue-demi";
+import { computed, watch } from "vue-demi";
 import formatDate from "../utils/dates";
 import { useContactStore } from "../stores/contact";
+import { useRouter } from "vue-router";
 
 const store = useContactStore();
+const router = useRouter();
 
 const loadingRestoreState = computed(() => store.restoringContactsState);
 const isRestoring = computed(() => loadingRestoreState.value === "loading");
+
+watch(loadingRestoreState, (newLoadingState) => {
+  if (newLoadingState === "success") {
+    router.push({ name: "home" });
+  }
+});
 
 const props = defineProps({
   contact: {

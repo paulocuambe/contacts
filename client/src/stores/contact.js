@@ -180,7 +180,7 @@ export const useContactStore = defineStore({
           contact.id !== id ? contact : restoredContact
         );
 
-        this.restoringContactsState = "successs";
+        this.restoringContactsState = "success";
       } else {
         this.restoreContactError = await request.json();
         this.restoringContactsState = "error";
